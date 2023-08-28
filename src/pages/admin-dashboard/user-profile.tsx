@@ -3,6 +3,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { logout } from "./index";
+
 const UserProfile: React.FC<any> = ({ users, userId }) => {
   const [image, setImage] = useState<File | null>(null);
   const [ name, setName ] = useState<string>("");
@@ -39,9 +41,10 @@ const UserProfile: React.FC<any> = ({ users, userId }) => {
           position: toast.POSITION.TOP_RIGHT,
         });
       } catch (error) {
-        return toast.error("Photo upload failed. Please try again later.", {
+        toast.error("Photo upload failed. Please try again later.", {
           position: toast.POSITION.TOP_RIGHT,
         });
+        logout();
       }
     }
   };

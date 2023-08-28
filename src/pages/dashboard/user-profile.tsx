@@ -1,10 +1,25 @@
 import React from "react";
+import "firebase/auth";
+import { signOut } from "firebase/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { auth } from "../login";
+import { logout } from "../admin-dashboard";
 
 const UserProfile: React.FC = () => {
-  const userData = JSON.parse(`${localStorage.getItem("isLoggedIn")}`).user;
+  let userData = null;
+
+  if(localStorage.getItem("isLoggedIn")){
+    userData = JSON.parse(`${localStorage.getItem("isLoggedIn")}`).user;
+
+  }
+
+
   return (
     <div className="flex justify-between w-[100%] bg-slate-50 mb-4">
-      <div></div>
+      <div>
+        <button className="p-2 m-2 bg-blue-700 rounded-lg text-white font-bold" onClick={logout}>Logout</button>
+      </div>
       <div className="flex m-4">
         <img
           src={`${

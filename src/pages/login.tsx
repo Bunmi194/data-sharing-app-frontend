@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 initializeApp(firebaseConfig);
 
-const auth = getAuth();
+export const auth = getAuth();
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");

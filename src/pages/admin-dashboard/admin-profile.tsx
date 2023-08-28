@@ -1,6 +1,13 @@
 import React from "react";
 import { useMyStatsContext } from "../../App";
 import axios from "axios";
+import "firebase/auth";
+import { signOut } from "firebase/auth";
+import { auth } from "../login";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { logout } from "./index";
 
 interface UserProfileProps {
   name: string;
@@ -13,6 +20,7 @@ const AdminProfile: React.FC<UserProfileProps> = ({
   setIsModalOpen,
 }) => {
   const { setStatsData } = useMyStatsContext();
+  const navigate = useNavigate();
   const showModal = () => {
     setIsModalOpen(true);
     fetchData();
@@ -20,7 +28,8 @@ const AdminProfile: React.FC<UserProfileProps> = ({
 
   const userData = JSON.parse(`${localStorage.getItem("isLoggedIn")}`);
   const fetchData = async () => {
-    const token = userData.token;
+    try {
+      const token = userData.token;
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -37,6 +46,9 @@ const AdminProfile: React.FC<UserProfileProps> = ({
       setStatsData(apiResult.records);
       return;
     }
+    } catch (error) {
+      logout();
+    }
   };
 
   return (
@@ -48,6 +60,7 @@ const AdminProfile: React.FC<UserProfileProps> = ({
         >
           Compare Data
         </button>
+        <button className="p-2 m-2 bg-blue-700 rounded-lg text-white font-bold" onClick={logout}>Logout</button>
       </div>
       <div className="flex m-4">
         <img
@@ -55,7 +68,7 @@ const AdminProfile: React.FC<UserProfileProps> = ({
           alt="Profile"
           className="w-10 h-10 rounded-full mr-3"
         />
-        <span className="text-xl font-semibold">{userData.user.name}</span>
+        <span className="text-xl font-semibold">{userData && userData.user? userData.user.name : ""}</span>
       </div>
     </div>
   );

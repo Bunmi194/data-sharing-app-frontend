@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
+import "firebase/auth";
+import { signOut } from "firebase/auth";
+import { auth } from "../login";
+import { logout } from "../admin-dashboard";
 
 const DataForm: React.FC<any> = () => {
   const [companyName, setCompanyName] = useState("");
@@ -11,6 +15,8 @@ const DataForm: React.FC<any> = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    
     if (!companyName || !numberOfUsers || !numberOfProducts || !percentage) {
       return toast.error("Please fill all fields", {
         position: toast.POSITION.TOP_RIGHT,
@@ -46,7 +52,9 @@ const DataForm: React.FC<any> = () => {
         window.location.reload();
         return;
       }
-    } catch (error) {}
+    } catch (error) {
+      logout();
+    }
   };
 
   useEffect(() => {

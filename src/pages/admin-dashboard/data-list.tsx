@@ -2,29 +2,34 @@ import React, { useEffect, useState } from "react";
 import AdminProfile from "./admin-profile";
 import { ImFileEmpty } from "react-icons/im";
 import axios from "axios";
+import { logout } from "./index";
 
 const ListData: React.FC<any> = ({ setIsModalOpen, userId }) => {
   const [activeData, setActiveData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const userData = JSON.parse(`${localStorage.getItem("isLoggedIn")}`);
-      const token = userData.token;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      };
-
-      const result = await axios.get(
-        `http://localhost:5000/v1/data/admin/${userId}`,
-        config
-      );
-      const apiResult = result.data;
-      if (apiResult.status === true) {
-        setActiveData(apiResult.records);
-        return;
+      try {
+        const userData = JSON.parse(`${localStorage.getItem("isLoggedIn")}`);
+        const token = userData.token;
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        };
+  
+        const result = await axios.get(
+          `http://localhost:5000/v1/data/admin/${userId}`,
+          config
+        );
+        const apiResult = result.data;
+        if (apiResult.status === true) {
+          setActiveData(apiResult.records);
+          return;
+        }
+      } catch (error) {
+        logout();
       }
     };
     if (userId) {
@@ -44,7 +49,7 @@ const ListData: React.FC<any> = ({ setIsModalOpen, userId }) => {
       </h2>
       <div className="max-h-[80vh] overflow-y-auto">
         <div className={`${true ? "grid grid-cols-2 gap-4" : ""}`}>
-          {activeData.length ? (
+          {activeData && activeData.length ? (
             activeData.map((data: any) => {
               return (
                 <div

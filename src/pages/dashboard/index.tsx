@@ -3,36 +3,49 @@ import DataForm from "./data-form";
 import ListData from "./data-list";
 import { useMyDataContext } from "../../App";
 import axios from "axios";
+import "react-toastify/dist/ReactToastify.css";
+import "firebase/auth";
+import { signOut } from "firebase/auth";
+import { auth } from "../login";
+import { toast } from "react-toastify";
+import { logout } from "../admin-dashboard";
 
 const Index: React.FC = () => {
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState<any>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isLoggedIn, setIsLoggedIn } = useMyDataContext();
 
+
+
   useEffect(() => {
-    if (userData) {
+    if (isLoggedIn) {
       fetchData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isLoggedIn]);
   const fetchData = async () => {
     const userData = JSON.parse(`${localStorage.getItem("isLoggedIn")}`);
-    const token = userData.token;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
-    const result = await axios.get(
-      `http://localhost:5000/v1/data/${userData.user.id}`,
-      config
-    );
-    const apiResult = result.data;
-    if (apiResult.status === true) {
-      setUserData(apiResult.records);
-      return;
+    try {
+      if(userData && userData.token) {
+        const token = userData.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      };
+      const result = await axios.get(
+        `http://localhost:5000/v1/data/${userData.user.id}`,
+        config
+      );
+      const apiResult = result.data;
+      if (apiResult.status === true) {
+        setUserData(apiResult.records);
+        return;
+      }
+    }
+    } catch (error) {
+      logout();
     }
   };
   return (

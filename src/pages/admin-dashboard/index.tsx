@@ -5,11 +5,30 @@ import ListData from "./data-list";
 import axios from "axios";
 import Modal from "react-modal";
 import { useMyStatsContext } from "../../App";
+import "react-toastify/dist/ReactToastify.css";
+import "firebase/auth";
+import { signOut } from "firebase/auth";
+import { auth } from "../login";
+import { toast } from "react-toastify";
+
+export const logout = async () => {
+  signOut(auth)
+    .then((signUserOut)=>{
+      localStorage.removeItem("isLoggedIn");
+      window.location.reload();
+    })
+    .catch((error)=>{
+      toast.error("Please try again later", {
+        position: toast.POSITION.TOP_RIGHT
+      })
+    });
+}
 
 const Index: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [users, setUsers] = useState<Array<any>>([]);
   const [userId, setUserId] = useState("");
+
 
   const { statsData } = useMyStatsContext();
   let statistics: Array<any> = [];
@@ -26,20 +45,27 @@ const Index: React.FC = () => {
   }, []);
 
   const fetchData = async () => {
-    const userData = JSON.parse(`${localStorage.getItem("isLoggedIn")}`);
-    const token = userData.token;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
-    const result = await axios.get(`http://localhost:5000/v1/user`, config);
-    const apiResult = result.data;
-    if (apiResult.status === true) {
-      setUsers(apiResult.records);
-      return;
+    try {
+      
+      const userData = JSON.parse(`${localStorage.getItem("isLoggedIn")}`);
+      if (userData) {
+        const token = userData.token;
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        };
+        const result = await axios.get(`http://localhost:5000/v1/user`, config);
+        const apiResult = result.data;
+        if (apiResult.status === true) {
+          setUsers(apiResult.records);
+          return;
+        }
+      }
+    } catch (error) {
+      logout();
     }
   };
 
@@ -93,7 +119,7 @@ const Index: React.FC = () => {
                 <div className="pt-1 pb-3 px-4">
                   <p>
                     Name:
-                    {statistics.length
+                    {statistics && statistics.length
                       ? users.find(
                           (user: any) => user.id === statistics[0].userId
                         )?.name
@@ -101,11 +127,11 @@ const Index: React.FC = () => {
                   </p>
                   <p>
                     Total Number of Entries:
-                    {statistics.length ? statistics[0].companies.length : ""}
+                    {statistics && statistics.length ? statistics[0].companies.length : ""}
                   </p>
                   <p>
                     Total Number of Users:
-                    {statistics.length
+                    {statistics && statistics.length
                       ? statistics[0].companies.reduce(
                           (acc: any, val: any) => acc + val.numberOfUsers,
                           0
@@ -114,7 +140,7 @@ const Index: React.FC = () => {
                   </p>
                   <p>
                     Total Number of Products:
-                    {statistics.length
+                    {statistics && statistics.length
                       ? statistics[0].companies.reduce(
                           (acc: any, val: any) => acc + val.numberOfProducts,
                           0
@@ -123,7 +149,7 @@ const Index: React.FC = () => {
                   </p>
                 </div>
                 <div className="max-h-[57vh] overflow-scroll bg-slate-900">
-                  {statistics[0] &&
+                  {statistics && statistics[0] &&
                     statistics[0].companies.map((company: any) => {
                       return (
                         <div
@@ -152,7 +178,7 @@ const Index: React.FC = () => {
                   <div className="pt-1 pb-3 px-4">
                     <p>
                       Name:{" "}
-                      {statistics.length
+                      {statistics && statistics.length
                         ? users.find(
                             (user: any) => user.id === statistics[1].userId
                           )?.name
@@ -160,11 +186,11 @@ const Index: React.FC = () => {
                     </p>
                     <p>
                       Total Number of Entries:
-                      {statistics.length ? statistics[1].companies.length : ""}
+                      {statistics && statistics.length ? statistics[1].companies.length : ""}
                     </p>
                     <p>
                       Total Number of Users:
-                      {statistics.length
+                      {statistics && statistics.length
                         ? statistics[1].companies.reduce(
                             (acc: any, val: any) => acc + val.numberOfUsers,
                             0
@@ -173,7 +199,7 @@ const Index: React.FC = () => {
                     </p>
                     <p>
                       Total Number of Products:
-                      {statistics.length
+                      {statistics && statistics.length
                         ? statistics[1].companies.reduce(
                             (acc: any, val: any) => acc + val.numberOfProducts,
                             0
@@ -191,7 +217,7 @@ const Index: React.FC = () => {
                   </div>
                 </div>
                 <div className="max-h-[57vh] bg-slate-900 overflow-scroll">
-                  {statistics[1] &&
+                  {statistics && statistics[1] &&
                     statistics[1].companies.map((company: any) => {
                       return (
                         <div
