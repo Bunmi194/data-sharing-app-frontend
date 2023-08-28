@@ -30,7 +30,7 @@ const Signup: React.FC = () => {
     };
     try {
       const result = await axios.post(
-        "http://localhost:5000/v1/user/register",
+        `${process.env.REACT_APP_BASE_URL}/v1/user/register`,
         body,
         config
       );

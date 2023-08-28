@@ -55,7 +55,7 @@ const Index: React.FC = () => {
             "Access-Control-Allow-Origin": "*",
           },
         };
-        const result = await axios.get(`http://localhost:5000/v1/user`, config);
+        const result = await axios.get(`${process.env.REACT_APP_BASE_URL}/v1/user`, config);
         const apiResult = result.data;
         if (apiResult.status === true) {
           setUsers(apiResult.records);

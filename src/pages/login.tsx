@@ -42,8 +42,9 @@ const Login: React.FC = () => {
           "Access-Control-Allow-Origin": "*",
         },
       };
+      console.log("process.env.REACT_APP_BASE_URL: ", process.env.REACT_APP_BASE_URL)
       const result = await axios.post(
-        "http://localhost:5000/v1/user/login",
+        `${process.env.REACT_APP_BASE_URL}/v1/user/login`,
         body,
         config
       );

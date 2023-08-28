@@ -30,7 +30,7 @@ const AdminProfile: React.FC<UserProfileProps> = ({ name, setIsModalOpen }) => {
         },
       };
       const result = await axios.get(
-        `http://localhost:5000/v1/data/statistics/admin`,
+        `${process.env.REACT_APP_BASE_URL}/v1/data/statistics/admin`,
         config
       );
       const apiResult = result.data;

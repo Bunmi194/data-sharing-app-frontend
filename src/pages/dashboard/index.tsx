@@ -30,7 +30,7 @@ const Index: React.FC = () => {
           },
         };
         const result = await axios.get(
-          `http://localhost:5000/v1/data/${userData.user.id}`,
+          `${process.env.REACT_APP_BASE_URL}/v1/data/${userData.user.id}`,
           config
         );
         const apiResult = result.data;

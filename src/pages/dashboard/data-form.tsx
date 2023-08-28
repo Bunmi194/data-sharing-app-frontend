@@ -37,7 +37,7 @@ const DataForm: React.FC<any> = () => {
         },
       };
       const result = await axios.post(
-        "http://localhost:5000/v1/data",
+        `${process.env.REACT_APP_BASE_URL}/v1/data`,
         body,
         config
       );

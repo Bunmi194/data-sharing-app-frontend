@@ -19,7 +19,7 @@ const UserProfile: React.FC<any> = ({ users, userId }) => {
 
       try {
         const response = await axios.post(
-          "http://localhost:5000/v1/user/edit",
+          `${process.env.REACT_APP_BASE_URL}/v1/user/edit`,
           formData,
           {
             headers: {
