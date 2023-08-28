@@ -1,13 +1,13 @@
 import { initializeApp } from "firebase/app";
 
 const details = {
-    REACT_APP_API_KEY: "AIzaSyD9u0zS7sLjnCEvMDJVdCRxVt3ECijGfnA",
-    REACT_APP_AUTH_DOMAIN: "data-sharing-app-c44ef.firebaseapp.com",
-    REACT_APP_PROJECT_ID: "data-sharing-app-c44ef",
-    REACT_APP_STORAGE_BUCKET: "data-sharing-app-c44ef.appspot.com",
-    REACT_APP_MESSAGING_SENDER_ID: "1086397368593",
-    REACT_APP_APP_ID: "1:1086397368593:web:38992ff0971c9a5a4d24b0",
-    REACT_APP_MEASUREMENT_ID: "G-RD7Z0DZW54"
+    REACT_APP_API_KEY: process.env.REACT_APP_API_KEY,
+    REACT_APP_AUTH_DOMAIN: process.env.REACT_APP_AUTH_DOMAIN,
+    REACT_APP_PROJECT_ID: process.env.REACT_APP_PROJECT_ID,
+    REACT_APP_STORAGE_BUCKET: process.env.REACT_APP_STORAGE_BUCKET,
+    REACT_APP_MESSAGING_SENDER_ID: process.env.REACT_APP_MESSAGING_SENDER_ID,
+    REACT_APP_APP_ID: process.env.REACT_APP_APP_ID,
+    REACT_APP_MEASUREMENT_ID: process.env.REACT_APP_MEASUREMENT_ID
 
 }
 export const firebaseConfig = {
