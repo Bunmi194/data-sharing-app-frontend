@@ -10,7 +10,6 @@ interface UserProfileProps {
 
 const AdminProfile: React.FC<UserProfileProps> = ({
   name,
-  profilePicture,
   setIsModalOpen,
 }) => {
   const { setStatsData } = useMyStatsContext();
@@ -19,8 +18,8 @@ const AdminProfile: React.FC<UserProfileProps> = ({
     fetchData();
   };
 
+  const userData = JSON.parse(`${localStorage.getItem("isLoggedIn")}`);
   const fetchData = async () => {
-    const userData = JSON.parse(`${localStorage.getItem("isLoggedIn")}`);
     const token = userData.token;
     const config = {
       headers: {
@@ -52,11 +51,11 @@ const AdminProfile: React.FC<UserProfileProps> = ({
       </div>
       <div className="flex m-4">
         <img
-          src={profilePicture}
+          src="/profile.jpeg"
           alt="Profile"
           className="w-10 h-10 rounded-full mr-3"
         />
-        <span className="text-xl font-semibold">{name}</span>
+        <span className="text-xl font-semibold">{userData.user.name}</span>
       </div>
     </div>
   );
