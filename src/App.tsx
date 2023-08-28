@@ -23,19 +23,15 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") || "false"
   );
-  const [ userAccess, setUserAccess ] = useState<any>();
+  const [userAccess, setUserAccess] = useState<any>();
   const [statsData, setStatsData] = useState(
     localStorage.getItem("stats") || ""
   );
-
-  let userDetails: any;
 
   useEffect(() => {
     localStorage.setItem("isLoggedIn", isLoggedIn);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     setUserAccess(JSON.parse(`${localStorage.getItem("isLoggedIn")}`).user);
-    console.log("userDetails: ", userDetails);
-    console.log("NOTuserDetails: ", !userDetails);
   }, [isLoggedIn]);
   return (
     <>
@@ -44,36 +40,28 @@ function App() {
         <StatsContext.Provider value={{ statsData, setStatsData }}>
           <Routes>
             <Route path="/register" element={<Signup />}></Route>
-            <Route path="/" element={
-            userAccess && userAccess.admin? (
-              <Navigate to="/admin-dashboard"/>
-            ) : 
-            userAccess && !userAccess.admin?
-            (
-              <Navigate to="/dashboard"/>
-            )
-            :
-            (<Login />)
-            
-            }></Route>
-            <Route path="/dashboard" element={
-            !userAccess ? (
-              <Navigate to="/" />
-            ) 
-            : 
-           (
-              <Index />
-            )
-            }></Route>
-            <Route path="/admin-dashboard" element={
-            userAccess && userAccess.admin ? (
-              <Admin />
-            ) 
-            : 
-           (
-              <Navigate to="/" />
-            )
-            }></Route>
+            <Route
+              path="/"
+              element={
+                userAccess && userAccess.admin ? (
+                  <Navigate to="/admin-dashboard" />
+                ) : userAccess && !userAccess.admin ? (
+                  <Navigate to="/dashboard" />
+                ) : (
+                  <Login />
+                )
+              }
+            ></Route>
+            <Route
+              path="/dashboard"
+              element={!userAccess ? <Navigate to="/" /> : <Index />}
+            ></Route>
+            <Route
+              path="/admin-dashboard"
+              element={
+                userAccess && userAccess.admin ? <Admin /> : <Navigate to="/" />
+              }
+            ></Route>
           </Routes>
         </StatsContext.Provider>
       </DataContext.Provider>

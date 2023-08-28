@@ -46,7 +46,6 @@ const Signup: React.FC = () => {
         position: toast.POSITION.TOP_RIGHT,
       });
     } catch (error) {
-      console.log(`Error: ${error}`);
       return toast.error(`Error: ${error}`, {
         position: toast.POSITION.TOP_RIGHT,
       });

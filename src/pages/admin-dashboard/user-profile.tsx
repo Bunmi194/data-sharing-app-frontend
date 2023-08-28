@@ -7,7 +7,7 @@ import { logout } from "./index";
 
 const UserProfile: React.FC<any> = ({ users, userId }) => {
   const [image, setImage] = useState<File | null>(null);
-  const [ name, setName ] = useState<string>("");
+  const [name, setName] = useState<string>("");
 
   const uploadPhoto = async () => {
     const userData = JSON.parse(`${localStorage.getItem("isLoggedIn")}`);
@@ -51,7 +51,6 @@ const UserProfile: React.FC<any> = ({ users, userId }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      console.log("image", e.target.files);
       setImage(e.target.files[0]);
       setName(e.target.files[0].name);
     }
@@ -96,7 +95,9 @@ const UserProfile: React.FC<any> = ({ users, userId }) => {
         >
           Choose Photo
         </label>
-        <p className="pt-0 font-bold text-red-900 text-center border border-white">{name}</p>
+        <p className="pt-0 font-bold text-red-900 text-center border border-white">
+          {name}
+        </p>
         <input
           id="profilepic"
           type="file"

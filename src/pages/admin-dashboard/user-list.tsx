@@ -15,7 +15,8 @@ const UserList: React.FC<any> = ({ users, handleClickUser }) => {
             <div
               className="flex justify-start items-center border border-red-300 w-[80%] my-5 mx-4 p-3 rounded-lg cursor-pointer"
               onClick={(user) => handleClickUser(id)}
-            key={user.id}>
+              key={user.id}
+            >
               <div>
                 <img
                   src={`${user.profile ? user.profile : "/profile.jpeg"}`}

@@ -13,22 +13,21 @@ import { toast } from "react-toastify";
 
 export const logout = async () => {
   signOut(auth)
-    .then((signUserOut)=>{
+    .then((signUserOut) => {
       localStorage.removeItem("isLoggedIn");
       window.location.reload();
     })
-    .catch((error)=>{
+    .catch((error) => {
       toast.error("Please try again later", {
-        position: toast.POSITION.TOP_RIGHT
-      })
+        position: toast.POSITION.TOP_RIGHT,
+      });
     });
-}
+};
 
 const Index: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [users, setUsers] = useState<Array<any>>([]);
   const [userId, setUserId] = useState("");
-
 
   const { statsData } = useMyStatsContext();
   let statistics: Array<any> = [];
@@ -46,7 +45,6 @@ const Index: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      
       const userData = JSON.parse(`${localStorage.getItem("isLoggedIn")}`);
       if (userData) {
         const token = userData.token;
@@ -127,7 +125,9 @@ const Index: React.FC = () => {
                   </p>
                   <p>
                     Total Number of Entries:
-                    {statistics && statistics.length ? statistics[0].companies.length : ""}
+                    {statistics && statistics.length
+                      ? statistics[0].companies.length
+                      : ""}
                   </p>
                   <p>
                     Total Number of Users:
@@ -149,7 +149,8 @@ const Index: React.FC = () => {
                   </p>
                 </div>
                 <div className="max-h-[57vh] overflow-scroll bg-slate-900">
-                  {statistics && statistics[0] &&
+                  {statistics &&
+                    statistics[0] &&
                     statistics[0].companies.map((company: any) => {
                       return (
                         <div
@@ -186,7 +187,9 @@ const Index: React.FC = () => {
                     </p>
                     <p>
                       Total Number of Entries:
-                      {statistics && statistics.length ? statistics[1].companies.length : ""}
+                      {statistics && statistics.length
+                        ? statistics[1].companies.length
+                        : ""}
                     </p>
                     <p>
                       Total Number of Users:
@@ -217,7 +220,8 @@ const Index: React.FC = () => {
                   </div>
                 </div>
                 <div className="max-h-[57vh] bg-slate-900 overflow-scroll">
-                  {statistics && statistics[1] &&
+                  {statistics &&
+                    statistics[1] &&
                     statistics[1].companies.map((company: any) => {
                       return (
                         <div

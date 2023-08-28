@@ -2,10 +2,6 @@ import React from "react";
 import { useMyStatsContext } from "../../App";
 import axios from "axios";
 import "firebase/auth";
-import { signOut } from "firebase/auth";
-import { auth } from "../login";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { logout } from "./index";
 
@@ -15,12 +11,8 @@ interface UserProfileProps {
   setIsModalOpen: Function;
 }
 
-const AdminProfile: React.FC<UserProfileProps> = ({
-  name,
-  setIsModalOpen,
-}) => {
+const AdminProfile: React.FC<UserProfileProps> = ({ name, setIsModalOpen }) => {
   const { setStatsData } = useMyStatsContext();
-  const navigate = useNavigate();
   const showModal = () => {
     setIsModalOpen(true);
     fetchData();
@@ -30,22 +22,22 @@ const AdminProfile: React.FC<UserProfileProps> = ({
   const fetchData = async () => {
     try {
       const token = userData.token;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
-    const result = await axios.get(
-      `http://localhost:5000/v1/data/statistics/admin`,
-      config
-    );
-    const apiResult = result.data;
-    if (apiResult.status === true) {
-      setStatsData(apiResult.records);
-      return;
-    }
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      };
+      const result = await axios.get(
+        `http://localhost:5000/v1/data/statistics/admin`,
+        config
+      );
+      const apiResult = result.data;
+      if (apiResult.status === true) {
+        setStatsData(apiResult.records);
+        return;
+      }
     } catch (error) {
       logout();
     }
@@ -60,7 +52,12 @@ const AdminProfile: React.FC<UserProfileProps> = ({
         >
           Compare Data
         </button>
-        <button className="p-2 m-2 bg-blue-700 rounded-lg text-white font-bold" onClick={logout}>Logout</button>
+        <button
+          className="p-2 m-2 bg-blue-700 rounded-lg text-white font-bold"
+          onClick={logout}
+        >
+          Logout
+        </button>
       </div>
       <div className="flex m-4">
         <img
@@ -68,7 +65,9 @@ const AdminProfile: React.FC<UserProfileProps> = ({
           alt="Profile"
           className="w-10 h-10 rounded-full mr-3"
         />
-        <span className="text-xl font-semibold">{userData && userData.user? userData.user.name : ""}</span>
+        <span className="text-xl font-semibold">
+          {userData && userData.user ? userData.user.name : ""}
+        </span>
       </div>
     </div>
   );

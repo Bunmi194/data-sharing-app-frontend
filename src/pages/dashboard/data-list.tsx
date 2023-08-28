@@ -12,7 +12,11 @@ const ListData: React.FC<any> = ({ userData }) => {
         Uploaded Data
       </h2>
       <div className="max-h-[80vh] overflow-y-auto">
-        <div className={`${userData && userData.length ? "grid grid-cols-2 gap-4" : ""}`}>
+        <div
+          className={`${
+            userData && userData.length ? "grid grid-cols-2 gap-4" : ""
+          }`}
+        >
           {userData && userData.length ? (
             userData.map((data: any) => {
               return (

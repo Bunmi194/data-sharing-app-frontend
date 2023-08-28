@@ -18,7 +18,7 @@ const ListData: React.FC<any> = ({ setIsModalOpen, userId }) => {
             "Access-Control-Allow-Origin": "*",
           },
         };
-  
+
         const result = await axios.get(
           `http://localhost:5000/v1/data/admin/${userId}`,
           config
